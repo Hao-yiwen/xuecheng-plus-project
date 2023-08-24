@@ -6,13 +6,30 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="xuecheng-plus-content-service" />
+        <module name="xuecheng-plus-content-api" />
+      </profile>
+      <profile name="Annotation profile for xuecheng-plus-content" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.8/lombok-1.18.8.jar" />
+        </processorPath>
+        <module name="xuecheng-plus-content-model" />
         <module name="xuecheng-plus-base" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="xeucheng-plus-content-model" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="xuecheng-plus-base" options="-parameters" />
+      <module name="xeucheng-plus-content-model" options="-parameters" />
+      <module name="xuecheng-plus-base" options="" />
+      <module name="xuecheng-plus-content" options="" />
+      <module name="xuecheng-plus-content-api" options="-parameters" />
     </option>
   </component>
 </project>
