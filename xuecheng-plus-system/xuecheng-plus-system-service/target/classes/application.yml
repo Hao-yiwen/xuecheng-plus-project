@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: system-api
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://47.110.155.82:3306/xc402_system?serverTimezone=UTC&userUnicode=true&useSSL=false&
+    username: root
+    password: hyw650022

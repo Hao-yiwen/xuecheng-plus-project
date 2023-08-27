@@ -14,6 +14,8 @@
         <option value="$PROJECT_DIR$/xuecheng-plus-content/xuecheng-plus-content-api/pom.xml" />
         <option value="$PROJECT_DIR$/xuecheng-plus-content/xeucheng-plus-content-model/pom.xml" />
         <option value="$PROJECT_DIR$/xuecheng-plus-content/xuecheng-plus-content-model/pom.xml" />
+        <option value="$PROJECT_DIR$/xuecheng-plus-generator/pom.xml" />
+        <option value="$PROJECT_DIR$/xuecheng-plus-system/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

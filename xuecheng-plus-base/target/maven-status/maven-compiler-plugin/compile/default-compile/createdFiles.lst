@@ -1,1 +1,3 @@
-com/xuecheng/XuechengPlusBaseApplication.class
+com/xuecheng/base/model/PageParams.class
+com/xuecheng/base/model/PageResult.class
+com/xuecheng/base/config/LocalDateTimeConfig.class
