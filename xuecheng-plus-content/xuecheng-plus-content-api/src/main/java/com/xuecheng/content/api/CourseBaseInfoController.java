@@ -32,6 +32,7 @@ public class CourseBaseInfoController {
     @ApiOperation("新增课程")
     @PostMapping("/content/course")
     public CourseBaseInfoDto courseBaseInfoDto(@RequestBody AddCourseDto addCourseDto){
-        return null;
+        Long companyId = 1232141425L;
+        return courseBaseInfoService.createCourse(companyId,addCourseDto);
     }
 }
