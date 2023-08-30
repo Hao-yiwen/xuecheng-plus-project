@@ -2,6 +2,7 @@ package com.xuecheng.content.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.xuecheng.base.exception.XueChengPlusException;
 import com.xuecheng.base.model.PageParams;
 import com.xuecheng.base.model.PageResult;
 import com.xuecheng.content.mapper.CourseBaseMapper;
@@ -57,7 +58,7 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
     public CourseBaseInfoDto createCourse(Long companyId, AddCourseDto dto) {
 //        参数的合法性校验
         if (StringUtils.isBlank(dto.getName())) {
-            throw new RuntimeException("课程名称为空");
+            XueChengPlusException.cast("课程名称为空");
         }
 
         if (StringUtils.isBlank(dto.getMt())) {
@@ -117,7 +118,9 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
         CourseMarket courseMarket=courseMarketMapper.selectById(courseId);
         CourseBaseInfoDto courseBaseInfoDto = new CourseBaseInfoDto();
         BeanUtils.copyProperties(courseBase,courseBaseInfoDto);
-        BeanUtils.copyProperties(courseMarket,courseBaseInfoDto);
+        if(courseMarket!=null){
+            BeanUtils.copyProperties(courseMarket,courseBaseInfoDto);
+        }
 //        通过courseCategoryMapper查询分类信息，将分类名称放在courseBaseinfoDto中
         return courseBaseInfoDto;
     }
@@ -132,7 +135,7 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
 //        如果课程收费，没有填写价格也抛出异常
         if (charge.equals("201001")) {
             if (courseMarket.getPrice() == null || courseMarket.getPrice().floatValue() <= 0) {
-                throw new RuntimeException("课程价格信息不能为空必须大于0");
+                XueChengPlusException.cast("课程价格信息不能为空必须大于0");
             }
         }
 //        数据库查询营销信息，存在则更新，不存在则添加
