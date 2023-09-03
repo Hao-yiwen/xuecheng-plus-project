@@ -10,6 +10,7 @@ import com.xuecheng.content.mapper.CourseCategoryMapper;
 import com.xuecheng.content.mapper.CourseMarketMapper;
 import com.xuecheng.content.model.dto.AddCourseDto;
 import com.xuecheng.content.model.dto.CourseBaseInfoDto;
+import com.xuecheng.content.model.dto.EditCourseDto;
 import com.xuecheng.content.model.dto.QueryCourseParamsDto;
 import com.xuecheng.content.model.po.CourseBase;
 import com.xuecheng.content.model.po.CourseMarket;
@@ -83,18 +84,53 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
         return getCourseBaseInfo(courseBaseNew.getId());
     }
 
-    public CourseBaseInfoDto getCourseBaseInfo(long courseId){
+    @Override
+    public CourseBaseInfoDto getCourseBaseInfo(Long courseId) {
         CourseBase courseBase = courseBaseMapper.selectById(courseId);
-        if(courseBase==null){
+        if (courseBase == null) {
             return null;
         }
-        CourseMarket courseMarket=courseMarketMapper.selectById(courseId);
+        CourseMarket courseMarket = courseMarketMapper.selectById(courseId);
         CourseBaseInfoDto courseBaseInfoDto = new CourseBaseInfoDto();
-        BeanUtils.copyProperties(courseBase,courseBaseInfoDto);
-        if(courseMarket!=null){
-            BeanUtils.copyProperties(courseMarket,courseBaseInfoDto);
+        BeanUtils.copyProperties(courseBase, courseBaseInfoDto);
+        if (courseMarket != null) {
+            BeanUtils.copyProperties(courseMarket, courseBaseInfoDto);
         }
 //        通过courseCategoryMapper查询分类信息，将分类名称放在courseBaseinfoDto中
+        return courseBaseInfoDto;
+    }
+
+    @Override
+    public CourseBaseInfoDto updateCourseBase(Long companyId, EditCourseDto editCourseDto) {
+//        拿到课程id
+        Long courseId = editCourseDto.getId();
+//        查询课程
+        CourseBase courseBase = courseBaseMapper.selectById(courseId);
+        if (courseBase == null) {
+            XueChengPlusException.cast("课程不存在");
+        }
+//        数据合法性校验
+//        根据具体业务逻辑去校验
+//        本机构只能修改本机构的课程
+        if (!companyId.equals(courseBase.getCompanyId())) {
+            XueChengPlusException.cast("本机构只能修改本机构的课程");
+        }
+//        封装数据
+        BeanUtils.copyProperties(editCourseDto, courseBase);
+//        修改时间
+        courseBase.setChangeDate(LocalDateTime.now());
+//        更新数据库
+        int i = courseBaseMapper.updateById(courseBase);
+        if (i <= 0) {
+            XueChengPlusException.cast("修改课程信息失败");
+        }
+//        更新营销信息
+        CourseMarket courseMarket = new CourseMarket();
+        BeanUtils.copyProperties(editCourseDto, courseMarket);
+        saveCourseMarket(courseMarket);
+
+//        查询课程信息返回
+        CourseBaseInfoDto courseBaseInfoDto = getCourseBaseInfo(courseId);
         return courseBaseInfoDto;
     }
 
@@ -118,7 +154,7 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
             int insert = courseMarketMapper.insert(courseMarket);
             return insert;
         } else {
-            BeanUtils.copyProperties(courseMarket1, courseMarket1);
+            BeanUtils.copyProperties(courseMarket, courseMarket1);
             courseMarket1.setId(id);
             int insert = courseMarketMapper.updateById(courseMarket1);
             return insert;

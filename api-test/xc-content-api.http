@@ -35,3 +35,7 @@ Content-Type: application/json
   "phone": "",
   "validDays": 365
 }
+
+### 课程查询
+GET {{content_host}}/content/course/40
+Content-Type: application/json
