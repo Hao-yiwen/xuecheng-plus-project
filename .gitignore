@@ -1,1 +1,17 @@
 **/target/**
+
+*.pydevproject
+.project
+.metadata
+target/
+test-output
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
+*.iml
