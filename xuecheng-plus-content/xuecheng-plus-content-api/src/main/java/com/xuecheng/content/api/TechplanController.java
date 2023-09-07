@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * 课程计划相关接口
  */
-@Api(value = "课程计划编辑接口", tags = "课程计划编辑接口")
+@Api(value = "课程计划管理接口", tags = "课程计划管理接口")
 @RestController
 public class TechplanController {
 
@@ -43,7 +43,7 @@ public class TechplanController {
         teachplanService.deleteTeachplan(courseId);
     }
 
-    @ApiOperation("课程向上移动")
+    @ApiOperation("课程移动")
     @PostMapping("/teachplan/{movetype}/{id}")
     public void moveupTeachplan(@PathVariable String movetype, @PathVariable Long id) {
         teachplanService.moveupTeachplan(movetype,id);
