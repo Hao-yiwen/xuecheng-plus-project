@@ -6,13 +6,17 @@ import com.xuecheng.content.mapper.TeachplanMapper;
 import com.xuecheng.content.mapper.TeachplanMediaMapper;
 import com.xuecheng.content.model.dto.SaveTeachplanDto;
 import com.xuecheng.content.model.dto.TeachplanDto;
+import com.xuecheng.content.model.dto.enums.MoveType;
 import com.xuecheng.content.model.po.Teachplan;
 import com.xuecheng.content.model.po.TeachplanMedia;
 import com.xuecheng.content.service.TeachplanService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -59,6 +63,7 @@ public class TeachplanServiceImpl implements TeachplanService {
         }
     }
 
+    @Transactional
     @Override
     public void deleteTeachplan(Long courseId) {
         Teachplan teachplan = teachplanMapper.selectById(courseId);
@@ -67,12 +72,14 @@ public class TeachplanServiceImpl implements TeachplanService {
             if (delete <= 0) {
                 throw new RuntimeException("课程计划删除失败");
             }
-            TeachplanMedia teachplanMedia = new TeachplanMedia();
             LambdaQueryWrapper<TeachplanMedia> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(TeachplanMedia::getCourseId, courseId);
-            int delete1 = teachplanMediaMapper.deleteById(queryWrapper);
-            if (delete <= 0) {
-                throw new RuntimeException("课程媒介删除失败");
+            List<TeachplanMedia> teachplanMediaList = teachplanMediaMapper.selectList(queryWrapper);
+            if (teachplanMediaList.size() > 0) {
+                int delete1 = teachplanMediaMapper.deleteBatchIds(teachplanMediaList);
+                if (delete1 <= 0) {
+                    throw new RuntimeException("课程媒介删除失败");
+                }
             }
         } else {
             LambdaQueryWrapper<Teachplan> queryWrapper = new LambdaQueryWrapper<>();
@@ -88,5 +95,41 @@ public class TeachplanServiceImpl implements TeachplanService {
             }
         }
 
+    }
+
+    @Transactional
+    @Override
+    public void moveupTeachplan(String movetype, Long id) {
+        Teachplan teachplan = teachplanMapper.selectById(id);
+        if (teachplan == null) {
+            return;  // Or handle it differently
+        }
+        int currentOrder = teachplan.getOrderby();
+        int newOrder;
+        LambdaQueryWrapper<Teachplan> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Teachplan::getParentid, teachplan.getParentid())
+                .eq(Teachplan::getCourseId, teachplan.getCourseId());
+
+        if (MoveType.MOVEUP.getMoveType().equals(movetype) && currentOrder != 1) {
+            newOrder = currentOrder - 1;
+            queryWrapper.eq(Teachplan::getOrderby, newOrder);
+        } else if (currentOrder != teachplanMapper.selectCount(queryWrapper)) {
+            newOrder = currentOrder + 1;
+            queryWrapper.eq(Teachplan::getOrderby, newOrder);
+        } else {
+            return;  // Or handle it differently
+        }
+
+        Teachplan adjacentTeachplan = teachplanMapper.selectOne(queryWrapper);
+
+        if (adjacentTeachplan != null) {
+            // Swap the 'orderby' values of the two Teachplan objects
+            teachplan.setOrderby(newOrder);
+            adjacentTeachplan.setOrderby(currentOrder);
+
+            // Perform the updates
+            teachplanMapper.updateById(teachplan);
+            teachplanMapper.updateById(adjacentTeachplan);
+        }
     }
 }
