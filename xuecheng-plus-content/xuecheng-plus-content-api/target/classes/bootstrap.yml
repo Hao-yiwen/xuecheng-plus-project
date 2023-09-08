@@ -6,6 +6,12 @@ server:
 spring:
   application:
     name: content-api
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+      discovery:
+        namespace: dev402
+        group: xuecheng-plus-project
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/xc402_content?serverTimezone=UTC&userUnicode=true&useSSL=false&

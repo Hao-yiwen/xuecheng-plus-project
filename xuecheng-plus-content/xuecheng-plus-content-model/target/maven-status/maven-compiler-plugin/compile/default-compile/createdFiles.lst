@@ -13,3 +13,4 @@ com/xuecheng/content/model/dto/AddCourseDto.class
 com/xuecheng/content/model/dto/CourseBaseInfoDto.class
 com/xuecheng/content/model/po/CoursePublish.class
 com/xuecheng/content/model/po/CourseBase.class
+com/xuecheng/content/model/dto/enums/MoveType.class

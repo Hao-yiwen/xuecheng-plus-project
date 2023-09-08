@@ -4,6 +4,9 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/xuecheng-plus-generator/xuecheng-plus-generator.iml" filepath="$PROJECT_DIR$/xuecheng-plus-generator/xuecheng-plus-generator.iml" />
       <module fileurl="file://$PROJECT_DIR$/xuecheng-plus-project.iml" filepath="$PROJECT_DIR$/xuecheng-plus-project.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xuecheng-plus-system/xuecheng-plus-system-api/xuecheng-plus-system-api.iml" filepath="$PROJECT_DIR$/xuecheng-plus-system/xuecheng-plus-system-api/xuecheng-plus-system-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xuecheng-plus-system/xuecheng-plus-system-model/xuecheng-plus-system-model.iml" filepath="$PROJECT_DIR$/xuecheng-plus-system/xuecheng-plus-system-model/xuecheng-plus-system-model.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xuecheng-plus-system/xuecheng-plus-system-service/xuecheng-plus-system-service.iml" filepath="$PROJECT_DIR$/xuecheng-plus-system/xuecheng-plus-system-service/xuecheng-plus-system-service.iml" />
     </modules>
   </component>
 </project>
