@@ -17,16 +17,16 @@ spring:
         group: xuecheng-plus-project
         file-extension: yaml
         refresh-enabled: true
+        extension-configs:
+          - data-id: content-service-${spring.profiles.active}.yaml
+            group: xuecheng-plus-project
+            refresh: true
+        shared-configs:
+          - data-id: swagger-${spring.profiles.active}.yaml
+            group: xuecheng-plus-common
+            refresh: true
+          - data-id: logging-${spring.profiles.active}.yaml
+            group: xuecheng-plus-common
+            refresh: true
   profiles:
     active: dev # 环境名
-
-# 日志文件配置路径
-logging:
-  config: classpath:log4j2-dev.xml
-
-swagger:
-  title: "学成在线内容管理系统"
-  description: "内容管理系统对课程相关信息进行管理"
-  base-package: com.xuecheng.content
-  enabled: true
-  version: 1.0.0
