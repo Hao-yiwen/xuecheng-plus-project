@@ -5,3 +5,7 @@
 ### 课程基础
 ### 课程计划
 ### 师资管理
+
+# 技术栈
+
+spring cloud + spring boot + redis + nacos + mybatis plus + mysql
