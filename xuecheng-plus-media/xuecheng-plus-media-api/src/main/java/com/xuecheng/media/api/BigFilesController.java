@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+
 /**
- * @author Mr.M
+ * @author yiwen_hao
  * @version 1.0
  * @description 大文件上传接口
  * @date 2022/9/6 11:29
@@ -21,14 +23,15 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 public class BigFilesController {
 
-
+    @Autowired
+    MediaFileService mediaFileService;
 
     @ApiOperation(value = "文件上传前检查文件")
     @PostMapping("/upload/checkfile")
     public RestResponse<Boolean> checkfile(
             @RequestParam("fileMd5") String fileMd5
     ) throws Exception {
-        return null;
+        return mediaFileService.checkFile(fileMd5);
     }
 
 
@@ -36,7 +39,7 @@ public class BigFilesController {
     @PostMapping("/upload/checkchunk")
     public RestResponse<Boolean> checkchunk(@RequestParam("fileMd5") String fileMd5,
                                             @RequestParam("chunk") int chunk) throws Exception {
-        return null;
+        return mediaFileService.checkChunk(fileMd5, chunk);
     }
 
     @ApiOperation(value = "上传分块文件")
@@ -44,8 +47,10 @@ public class BigFilesController {
     public RestResponse uploadchunk(@RequestParam("file") MultipartFile file,
                                     @RequestParam("fileMd5") String fileMd5,
                                     @RequestParam("chunk") int chunk) throws Exception {
-
-        return null;
+        File tempFile = File.createTempFile("minio", ".temp");
+        file.transferTo(tempFile);
+        String absolutePath = tempFile.getAbsolutePath();
+        return mediaFileService.uploadChunk(fileMd5, chunk, absolutePath);
     }
 
     @ApiOperation(value = "合并文件")
@@ -54,7 +59,6 @@ public class BigFilesController {
                                     @RequestParam("fileName") String fileName,
                                     @RequestParam("chunkTotal") int chunkTotal) throws Exception {
         return null;
-
     }
 
 
