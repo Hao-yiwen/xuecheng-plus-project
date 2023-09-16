@@ -17,7 +17,7 @@ public class BigFileTest {
 //        分块文件存储路径
         String chunkFilePath = "/Users/yw.hao/Desktop/chunk/";
 //        分开文件大小
-        int chunkSize = 1024 * 1024 * 1;
+        int chunkSize = 1024 * 1024 * 5;
 //        分开文件个数
         int chunkNum = (int) Math.ceil(sourceFile.length() * 1.0 / chunkSize);
         RandomAccessFile r = new RandomAccessFile(sourceFile, "r");
