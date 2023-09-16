@@ -1,0 +1,9 @@
+### 上传文件
+POST localhost:63050/media/upload/coursefile
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="filedata"; filename="1.png"
+Content-Type: application/octet-stream
+
+< /Users/yw.hao/Downloads/1.png

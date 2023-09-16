@@ -4,6 +4,7 @@ import com.alibaba.nacos.common.http.param.MediaType;
 import com.xuecheng.base.model.PageParams;
 import com.xuecheng.base.model.PageResult;
 import com.xuecheng.media.model.dto.QueryMediaParamsDto;
+import com.xuecheng.media.model.dto.UploadFileParamsDto;
 import com.xuecheng.media.model.dto.UploadFileResultDto;
 import com.xuecheng.media.model.po.MediaFiles;
 import com.xuecheng.media.service.MediaFileService;
@@ -12,6 +13,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
 
 /**
  * @author Mr.M
@@ -37,7 +40,19 @@ public class MediaFilesController {
 
     @ApiOperation("上传图片")
     @RequestMapping(value = "/upload/coursefile", consumes = MediaType.MULTIPART_FORM_DATA)
-    public UploadFileResultDto upload(@RequestPart("filedata")MultipartFile filedata) {
-        return null;
+    public UploadFileResultDto upload(@RequestPart("filedata")MultipartFile filedata) throws Exception {
+//        上传文件信息
+        UploadFileParamsDto uploadFileParamsDto = new UploadFileParamsDto();
+        uploadFileParamsDto.setFilename(filedata.getOriginalFilename());
+        uploadFileParamsDto.setFileSize(filedata.getSize());
+        uploadFileParamsDto.setFileType("001001");
+//        创建一个临时文件
+        File tempFile = File.createTempFile("minio",".temp");
+        filedata.transferTo(tempFile);
+        Long companyId = 1232141425L;
+
+        String localFilePath = tempFile.getAbsolutePath();
+//        接收到文件了
+        return mediaFileService.uploadFile(companyId,uploadFileParamsDto,localFilePath);
     }
 }
