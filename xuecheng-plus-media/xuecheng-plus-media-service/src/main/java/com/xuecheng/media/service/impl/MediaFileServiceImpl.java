@@ -9,10 +9,12 @@ import com.xuecheng.base.model.PageParams;
 import com.xuecheng.base.model.PageResult;
 import com.xuecheng.base.model.RestResponse;
 import com.xuecheng.media.mapper.MediaFilesMapper;
+import com.xuecheng.media.mapper.MediaProcessMapper;
 import com.xuecheng.media.model.dto.QueryMediaParamsDto;
 import com.xuecheng.media.model.dto.UploadFileParamsDto;
 import com.xuecheng.media.model.dto.UploadFileResultDto;
 import com.xuecheng.media.model.po.MediaFiles;
+import com.xuecheng.media.model.po.MediaProcess;
 import com.xuecheng.media.service.MediaFileService;
 import io.minio.*;
 import io.minio.errors.*;
@@ -59,6 +61,9 @@ public class MediaFileServiceImpl implements MediaFileService {
 
     @Autowired
     MediaFileService mediaFileServiceProxy;
+
+    @Autowired
+    MediaProcessMapper mediaProcessMapper;
 
     //    存储普通文件
     @Value("${minio.bucket.files}")
@@ -180,9 +185,34 @@ public class MediaFileServiceImpl implements MediaFileService {
                 log.debug("向数据库保存文件失败");
                 return null;
             }
-            return mediaFiles;
         }
+        // 记录待处理任务
+        // 通过mimeType判断是否添加到代处理任务
+        addWaitingTask(mediaFiles);
+        // 像MediaProcess插入记录
         return mediaFiles;
+    }
+
+    /**
+     * 添加待处理任务
+     *
+     * @param mediaFiles 媒资文件信息
+     */
+    private void addWaitingTask(MediaFiles mediaFiles) {
+        // 获取文件mimeType
+        String filename = mediaFiles.getFilename();
+        String extension = filename.substring(filename.lastIndexOf("."));
+        String mimeType = getMimeType(extension);
+        // 当前只支持avi转mp4
+        if (mimeType.equals("video/x-msvideo")) {
+            MediaProcess mediaProcess = new MediaProcess();
+            BeanUtils.copyProperties(mediaFiles, mediaProcess);
+            mediaProcess.setStatus("1");
+            mediaProcess.setCreateDate(LocalDateTime.now());
+            mediaProcess.setFailCount(0);
+            mediaProcess.setUrl(null);
+            mediaProcessMapper.insert(mediaProcess);
+        }
     }
 
     @Override
@@ -230,6 +260,13 @@ public class MediaFileServiceImpl implements MediaFileService {
         return fileMd5.substring(0, 1) + "/" + fileMd5.substring(1, 2) + "/" + fileMd5 + "/" + "chunk" + "/";
     }
 
+    /**
+     * 上传分块
+     * @param fileMd5  文件md5
+     * @param chunk  分块序号
+     * @param localChunkFilePath
+     * @return
+     */
     @Override
     public RestResponse uploadChunk(String fileMd5, int chunk, String localChunkFilePath) {
         String mimeType = getMimeType(null);
@@ -242,6 +279,14 @@ public class MediaFileServiceImpl implements MediaFileService {
         }
     }
 
+    /**
+     * 合并分块
+     * @param companyId  机构id
+     * @param fileMd5  文件md5
+     * @param chunkTotal 分块总和
+     * @param uploadFileParamsDto 文件信息
+     * @return
+     */
     @Override
     public RestResponse mergechunks(Long companyId, String fileMd5, int chunkTotal, UploadFileParamsDto uploadFileParamsDto) {
         // ===========合并分块文件============
@@ -292,7 +337,7 @@ public class MediaFileServiceImpl implements MediaFileService {
         RemoveObjectsArgs remove = RemoveObjectsArgs.builder().bucket(bucket_videofiles).objects(objects).build();
         Iterable<Result<DeleteError>> results = minioClient.removeObjects(remove);
         // 真正删除
-        results.forEach(f->{
+        results.forEach(f -> {
             try {
                 DeleteError deleteError = f.get();
             } catch (Exception e) {
