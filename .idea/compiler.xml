@@ -30,6 +30,12 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="xeucheng-plus-content-model" target="17" />
+      <module name="xxl-job" target="1.8" />
+      <module name="xxl-job-admin" target="1.8" />
+      <module name="xxl-job-core" target="1.8" />
+      <module name="xxl-job-executor-sample-frameless" target="1.8" />
+      <module name="xxl-job-executor-sample-springboot" target="1.8" />
+      <module name="xxl-job-executor-samples" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
