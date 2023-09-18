@@ -1,5 +1,6 @@
 package com.xuecheng.content.api;
 
+import com.xuecheng.content.model.dto.BindTeachplanMediaDto;
 import com.xuecheng.content.model.dto.SaveTeachplanDto;
 import com.xuecheng.content.model.dto.TeachplanDto;
 import com.xuecheng.content.model.dto.enums.MoveType;
@@ -47,6 +48,12 @@ public class TechplanController {
     @PostMapping("/teachplan/{movetype}/{id}")
     public void moveupTeachplan(@PathVariable String movetype, @PathVariable Long id) {
         teachplanService.moveupTeachplan(movetype,id);
+    }
+
+    @ApiOperation("课程计划和媒资信息绑定")
+    @PostMapping("/teachplan/association/media")
+    public void associationMedia(@RequestBody BindTeachplanMediaDto bindTeachplanMediaDto) {
+        teachplanService.associationMedia(bindTeachplanMediaDto);
     }
 
 }
