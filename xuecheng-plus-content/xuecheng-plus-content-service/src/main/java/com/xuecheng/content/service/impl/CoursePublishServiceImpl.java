@@ -4,12 +4,14 @@ import com.alibaba.fastjson.JSON;
 import com.xuecheng.base.exception.XueChengPlusException;
 import com.xuecheng.content.mapper.CourseBaseMapper;
 import com.xuecheng.content.mapper.CourseMarketMapper;
+import com.xuecheng.content.mapper.CoursePublishMapper;
 import com.xuecheng.content.mapper.CoursePublishPreMapper;
 import com.xuecheng.content.model.dto.CourseBaseInfoDto;
 import com.xuecheng.content.model.dto.CoursePreviewDto;
 import com.xuecheng.content.model.dto.TeachplanDto;
 import com.xuecheng.content.model.po.CourseBase;
 import com.xuecheng.content.model.po.CourseMarket;
+import com.xuecheng.content.model.po.CoursePublish;
 import com.xuecheng.content.model.po.CoursePublishPre;
 import com.xuecheng.content.service.CourseBaseInfoService;
 import com.xuecheng.content.service.CoursePublishService;
@@ -40,6 +42,9 @@ public class CoursePublishServiceImpl implements CoursePublishService {
 
     @Autowired
     CourseBaseMapper courseBaseMapper;
+
+    @Autowired
+    CoursePublishMapper coursePublishMapper;
 
     @Override
     public CoursePreviewDto getCoursePreviewInfo(Long courseId) {
@@ -109,5 +114,36 @@ public class CoursePublishServiceImpl implements CoursePublishService {
         courseBase.setAuditStatus("202003");
 
         courseBaseMapper.updateById(courseBase);
+    }
+
+    @Transactional
+    @Override
+    public void publish(Long comapnyId, Long courseId) {
+
+        // 查询预发布表数据
+        CoursePublishPre coursePublishPre = coursePublishPreMapper.selectById(courseId);
+        if(coursePublishPre==null) {
+            XueChengPlusException.cast("课程没有提交审核");
+        }
+        //没有审核通过不容许发布
+        String status = coursePublishPre.getStatus();
+        if(!status.equals("202004")) {
+            XueChengPlusException.cast("课程没有审核通过，不能发布~");
+        }
+        // 向课程发布表写数据
+        CoursePublish coursePublish = new CoursePublish();
+        BeanUtils.copyProperties(coursePublishPre,coursePublish);
+        // 先查询课程发布表
+        CoursePublish coursePublishObj = coursePublishMapper.selectById(courseId);
+        if(coursePublishObj==null) {
+            coursePublishMapper.insert(coursePublish);
+        } else {
+            coursePublishMapper.updateById(coursePublish);
+        }
+        // 向消息表写入数据
+        // todo...
+
+        // 将预发布表数据删除
+        coursePublishPreMapper.deleteById(courseId);
     }
 }
