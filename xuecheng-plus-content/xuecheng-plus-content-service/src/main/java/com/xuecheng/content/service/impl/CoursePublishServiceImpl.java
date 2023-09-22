@@ -1,6 +1,7 @@
 package com.xuecheng.content.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.xuecheng.base.exception.CommonError;
 import com.xuecheng.base.exception.XueChengPlusException;
 import com.xuecheng.content.mapper.CourseBaseMapper;
 import com.xuecheng.content.mapper.CourseMarketMapper;
@@ -16,6 +17,8 @@ import com.xuecheng.content.model.po.CoursePublishPre;
 import com.xuecheng.content.service.CourseBaseInfoService;
 import com.xuecheng.content.service.CoursePublishService;
 import com.xuecheng.content.service.TeachplanService;
+import com.xuecheng.messagesdk.model.po.MqMessage;
+import com.xuecheng.messagesdk.service.MqMessageService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -45,6 +48,9 @@ public class CoursePublishServiceImpl implements CoursePublishService {
 
     @Autowired
     CoursePublishMapper coursePublishMapper;
+
+    @Autowired
+    MqMessageService mqMessageService;
 
     @Override
     public CoursePreviewDto getCoursePreviewInfo(Long courseId) {
@@ -84,6 +90,7 @@ public class CoursePublishServiceImpl implements CoursePublishService {
 
         // 本机构只能提交本机构的课程
         // todo...
+        saveCoursePublishMessage(courseId);
 
         // 查询到课程的基本信息。营销信息。计划信息插入到课程发布表
         CoursePublishPre coursePublishPre = new CoursePublishPre();
@@ -114,6 +121,13 @@ public class CoursePublishServiceImpl implements CoursePublishService {
         courseBase.setAuditStatus("202003");
 
         courseBaseMapper.updateById(courseBase);
+    }
+
+    private void saveCoursePublishMessage(Long courseId) {
+        MqMessage coursePublish = mqMessageService.addMessage("course_publish", String.valueOf(courseId), null, null);
+        if(coursePublish==null) {
+            XueChengPlusException.cast(CommonError.UNKNOWN_ERROR);
+        }
     }
 
     @Transactional
