@@ -13,6 +13,7 @@ import com.xuecheng.content.model.dto.CourseBaseInfoDto;
 import com.xuecheng.content.model.dto.EditCourseDto;
 import com.xuecheng.content.model.dto.QueryCourseParamsDto;
 import com.xuecheng.content.model.po.CourseBase;
+import com.xuecheng.content.model.po.CourseCategory;
 import com.xuecheng.content.model.po.CourseMarket;
 import com.xuecheng.content.service.CourseBaseInfoService;
 import com.xuecheng.content.service.CourseCategoryService;
@@ -97,6 +98,12 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
             BeanUtils.copyProperties(courseMarket, courseBaseInfoDto);
         }
 //        通过courseCategoryMapper查询分类信息，将分类名称放在courseBaseinfoDto中
+        CourseCategory courseCategory = courseCategoryMapper.selectById(courseBase.getMt());
+        String mtName = courseCategory.getName();
+        courseBaseInfoDto.setMtName(mtName);
+        CourseCategory courseCategorySt = courseCategoryMapper.selectById(courseBase.getMt());
+        String stName = courseCategorySt.getName();
+        courseBaseInfoDto.setStName(stName);
         return courseBaseInfoDto;
     }
 
