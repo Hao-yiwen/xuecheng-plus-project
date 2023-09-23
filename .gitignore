@@ -16,3 +16,4 @@ local.properties
 .loadpath
 *.iml
 logs/**
+**/logs/**
