@@ -1,6 +1,11 @@
 package com.xuecheng.content.service.jobhandler;
 
 import com.xuecheng.base.exception.XueChengPlusException;
+import com.xuecheng.content.feignclient.CourseIndex;
+import com.xuecheng.content.feignclient.SearchServiceClient;
+import com.xuecheng.content.mapper.CoursePublishMapper;
+import com.xuecheng.content.model.dto.CoursePreviewDto;
+import com.xuecheng.content.model.po.CoursePublish;
 import com.xuecheng.content.service.CoursePublishService;
 import com.xuecheng.messagesdk.model.po.MqMessage;
 import com.xuecheng.messagesdk.service.MessageProcessAbstract;
@@ -8,6 +13,7 @@ import com.xuecheng.messagesdk.service.MqMessageService;
 import com.xxl.job.core.context.XxlJobHelper;
 import com.xxl.job.core.handler.annotation.XxlJob;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +28,11 @@ public class CoursePublishTask extends MessageProcessAbstract {
     @Autowired
     CoursePublishService coursePublishService;
 
+    @Autowired
+    SearchServiceClient searchServiceClient;
+
+    @Autowired
+    CoursePublishMapper coursePublishMapper;
 
     @XxlJob("CoursePublishJobHandler")
     public void coursePublishJobHandler() {
@@ -42,7 +53,7 @@ public class CoursePublishTask extends MessageProcessAbstract {
         saveCourseIndex(mqMessage, courseId);
         // 向redis写缓存
         //返回true表示任务完成
-        return false;
+        return true;
     }
 
     private void generateCourseHtml(MqMessage mqMessage, long courseId) {
@@ -75,6 +86,17 @@ public class CoursePublishTask extends MessageProcessAbstract {
         // 任务幂等性判断
         if (stageTwo > 0) {
             log.debug("课程索引信息已写入，无需执行...");
+            return;
+        }
+        // 查询课程信息，调用搜索服务添加索引接口
+        CoursePublish coursePublish = coursePublishMapper.selectById(courseId);
+
+        CourseIndex courseIndex = new CourseIndex();
+        BeanUtils.copyProperties(coursePublish, courseIndex);
+        // 远程调用
+        Boolean add = searchServiceClient.add(courseIndex);
+        if(!add) {
+            XueChengPlusException.cast("添加课程索引失败");
         }
 
         mqMessageService.completedStageTwo(taskId);
