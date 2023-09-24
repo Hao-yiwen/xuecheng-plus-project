@@ -8,13 +8,13 @@ spring:
     name: system-api
   cloud:
     nacos:
-      server-addr: 127.0.0.1:8848
+      server-addr: 192.168.2.129:8848
       discovery:
         namespace: dev402
         group: xuecheng-plus-project
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/xc402_system?serverTimezone=UTC&userUnicode=true&useSSL=false&
+    url: jdbc:mysql://192.168.2.129:3306/xc402_system?serverTimezone=UTC&userUnicode=true&useSSL=false&
     username: root
     password: mysql
 # 日志文件配置路径
