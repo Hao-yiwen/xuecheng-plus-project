@@ -7,7 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
       </profile>
-      <profile name="Annotation profile for xuecheng-plus-system" enabled="true">
+      <profile name="Annotation profile for xuecheng-plus-checkcode" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -15,6 +15,7 @@
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.8/lombok-1.18.8.jar" />
         </processorPath>
         <module name="xuecheng-plus-message-sdk" />
+        <module name="xuecheng-plus-checkcode" />
         <module name="xuecheng-plus-media-api" />
         <module name="xuecheng-plus-content-service" />
         <module name="xuecheng-plus-search" />
