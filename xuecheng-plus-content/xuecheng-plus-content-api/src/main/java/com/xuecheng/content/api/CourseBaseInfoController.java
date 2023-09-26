@@ -41,10 +41,6 @@ public class CourseBaseInfoController {
     @ApiOperation("根据id查询课程信息")
     @GetMapping("/course/{courseId}")
     public CourseBaseInfoDto getCourseBaseById(@PathVariable Long courseId) {
-        // 获取当前用户身份
-        SecurityUtil.XcUser user = SecurityUtil.getUser();
-        System.out.println(">>>>>>>>>>>>>>>");
-        System.out.println(user);
         CourseBaseInfoDto courseBaseInfoDto = courseBaseInfoService.getCourseBaseInfo(courseId);
         return courseBaseInfoDto;
     }
