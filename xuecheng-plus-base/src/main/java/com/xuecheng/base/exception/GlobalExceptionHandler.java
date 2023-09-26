@@ -31,6 +31,9 @@ public class GlobalExceptionHandler {
     public RestErrorResponse exception(XueChengPlusException e) {
 
         log.error("系统异常{}",e.getMessage(),e);
+        if(e.getMessage().equals("不允许访问")){
+            return new RestErrorResponse("您没有权限操作此功能");
+        }
 
         RestErrorResponse response = new RestErrorResponse(CommonError.UNKNOWN_ERROR.getErrMessage());
         return response;
