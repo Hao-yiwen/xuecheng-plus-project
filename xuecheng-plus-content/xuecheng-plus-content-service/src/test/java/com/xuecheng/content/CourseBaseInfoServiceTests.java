@@ -32,7 +32,7 @@ public class CourseBaseInfoServiceTests {
         pageParams.setPageNo(1L);
         pageParams.setPageSize(2L);
 
-        PageResult<CourseBase> pageResult = courseBaseInfoService.queryCourseBaseList(pageParams,courseParamsDto);
+        PageResult<CourseBase> pageResult = courseBaseInfoService.queryCourseBaseList(null, pageParams,courseParamsDto);
         System.out.println(pageResult);
     }
 }
