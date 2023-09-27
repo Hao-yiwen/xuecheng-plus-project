@@ -13,11 +13,13 @@ import com.xuecheng.learning.model.po.XcCourseTables;
 import com.xuecheng.learning.service.MyCourseTableService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Service
 public class MyCourseTableServiceImpl implements MyCourseTableService {
     @Autowired
     XcChooseCourseMapper chooseCourseMapper;
@@ -27,6 +29,9 @@ public class MyCourseTableServiceImpl implements MyCourseTableService {
 
     @Autowired
     ContentServiceClient contentServiceClient;
+
+    @Autowired
+    MyCourseTableService myCourseTableService;
 
     @Transactional
     @Override
@@ -40,16 +45,16 @@ public class MyCourseTableServiceImpl implements MyCourseTableService {
         String charge = coursepublish.getCharge();
         if("201000".equals(charge)) {
             // 如果课程免费，会向选课记录表添加课程发布记录
-             xcChooseCourse = addFreeCourse(userId, coursepublish);
+             xcChooseCourse = myCourseTableService.addFreeCourse(userId, coursepublish);
             // 向我的课程添加数据
-            XcCourseTables xcCourseTables = addCourseTables(xcChooseCourse);
+            XcCourseTables xcCourseTables = myCourseTableService.addCourseTables(xcChooseCourse);
         }else {
             // 如果收费课程，会向选课记录表写数据
-            xcChooseCourse = addChargeCourse(userId, coursepublish);
+            xcChooseCourse = myCourseTableService.addChargeCourse(userId, coursepublish);
         }
 
         // 判断学生的学习资格
-        XcCourseTablesDto xcCourseTablesDto = getLearningStatus(userId, courseId);
+        XcCourseTablesDto xcCourseTablesDto = myCourseTableService.getLearningStatus(userId, courseId);
 
         // 构造返回值
         XcChooseCourseDto xcChooseCourseDto = new XcChooseCourseDto();
@@ -82,6 +87,7 @@ public class MyCourseTableServiceImpl implements MyCourseTableService {
     }
 
     // 如果是免费课程，没费课程加入选课记录表，我的课程表
+    @Override
     public XcChooseCourse addFreeCourse(String userId, CoursePublish coursePublish) {
         Long courseId = coursePublish.getId();
         // 如果存在免费的课程记录且选课记录，则直接返回
@@ -115,6 +121,7 @@ public class MyCourseTableServiceImpl implements MyCourseTableService {
     }
 
     // 像我的课程写入选课记录
+    @Override
     public XcCourseTables addCourseTables(XcChooseCourse xcChooseCourse) {
         // 选课成功了才能向我的课程添加
         String status = xcChooseCourse.getStatus();
@@ -137,6 +144,7 @@ public class MyCourseTableServiceImpl implements MyCourseTableService {
         return xcCourseTables;
     }
 
+    @Override
     // 添加收费课程
     public XcChooseCourse addChargeCourse(String userId, CoursePublish coursePublish) {
         Long courseId = coursePublish.getId();
@@ -171,7 +179,7 @@ public class MyCourseTableServiceImpl implements MyCourseTableService {
     }
 
     public XcCourseTables getXcCourseTables(String userId, Long courseId) {
-        XcCourseTables xcCourseTables = courseTablesMapper.selectOne(new LambdaQueryWrapper<XcCourseTables>().eq(XcCourseTables::getCourseId, userId).eq(XcCourseTables::getCourseId, courseId));
+        XcCourseTables xcCourseTables = courseTablesMapper.selectOne(new LambdaQueryWrapper<XcCourseTables>().eq(XcCourseTables::getUserId, userId).eq(XcCourseTables::getCourseId, courseId));
         return xcCourseTables;
     }
 }

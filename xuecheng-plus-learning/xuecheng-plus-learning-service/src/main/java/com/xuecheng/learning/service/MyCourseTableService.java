@@ -1,8 +1,10 @@
 package com.xuecheng.learning.service;
 
+import com.xuecheng.content.model.po.CoursePublish;
 import com.xuecheng.learning.model.dto.XcChooseCourseDto;
 import com.xuecheng.learning.model.dto.XcCourseTablesDto;
 import com.xuecheng.learning.model.po.XcChooseCourse;
+import com.xuecheng.learning.model.po.XcCourseTables;
 
 /**
  * 选课相关接口
@@ -23,4 +25,10 @@ public interface MyCourseTableService {
      * @return
      */
     public XcCourseTablesDto getLearningStatus(String userId,Long courseId);
+
+    public XcCourseTables addCourseTables(XcChooseCourse xcChooseCourse);
+
+    public XcChooseCourse addFreeCourse(String userId, CoursePublish coursePublish);
+
+    public XcChooseCourse addChargeCourse(String userId, CoursePublish coursePublish);
 }
