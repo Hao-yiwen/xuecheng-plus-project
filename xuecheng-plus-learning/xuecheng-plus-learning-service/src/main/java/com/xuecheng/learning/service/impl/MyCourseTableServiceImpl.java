@@ -178,6 +178,11 @@ public class MyCourseTableServiceImpl implements MyCourseTableService {
         return xcChooseCourse;
     }
 
+    @Override
+    public boolean saveChooseCourseSuccess(String chooseCourseId) {
+        return false;
+    }
+
     public XcCourseTables getXcCourseTables(String userId, Long courseId) {
         XcCourseTables xcCourseTables = courseTablesMapper.selectOne(new LambdaQueryWrapper<XcCourseTables>().eq(XcCourseTables::getUserId, userId).eq(XcCourseTables::getCourseId, courseId));
         return xcCourseTables;
