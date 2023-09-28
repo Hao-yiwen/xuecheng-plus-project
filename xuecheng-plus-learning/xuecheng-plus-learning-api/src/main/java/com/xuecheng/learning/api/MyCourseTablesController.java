@@ -36,7 +36,7 @@ public class MyCourseTablesController {
     public XcChooseCourseDto addChooseCourse(@PathVariable("courseId") Long courseId) {
         // 当前登录用户
         SecurityUtil.XcUser user = SecurityUtil.getUser();
-        if (user==null) {
+        if (user == null) {
             XueChengPlusException.cast("请登录");
         }
         String userId = user.getId();
@@ -50,7 +50,7 @@ public class MyCourseTablesController {
     public XcCourseTablesDto getLearnstatus(@PathVariable("courseId") Long courseId) {
         // 当前登录用户
         SecurityUtil.XcUser user = SecurityUtil.getUser();
-        if (user==null) {
+        if (user == null) {
             XueChengPlusException.cast("请登录");
         }
         String userId = user.getId();
@@ -62,7 +62,15 @@ public class MyCourseTablesController {
     @ApiOperation("我的课程表")
     @GetMapping("/mycoursetable")
     public PageResult<XcCourseTables> mycoursetable(MyCourseTableParams params) {
-        return null;
+        SecurityUtil.XcUser user = SecurityUtil.getUser();
+        if(user==null){
+            XueChengPlusException.cast("请登录");
+        }
+        String userId = user.getId();
+        params.setUserId(userId);
+        PageResult<XcCourseTables> mycourestabls = myCourseTableService.mycourestabls(params);
+        return mycourestabls;
     }
+
 
 }
