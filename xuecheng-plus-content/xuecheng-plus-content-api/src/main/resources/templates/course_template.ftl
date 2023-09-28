@@ -24,7 +24,7 @@
     <div class="banner-bg"></div>
     <div class="banner-info">
         <div class="banner-left">
-            <p>${model.courseBase.mtName!''}<span>\ ${model.courseBase.stName!''}</span></p>
+            <p>${model.courseBase.mtName}<span>\ ${model.courseBase.stName}</span></p>
             <p class="tit">${model.courseBase.name}</p>
             <p class="pic">
                 <#if model.courseBase.charge=='201000'>

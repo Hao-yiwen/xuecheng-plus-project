@@ -31,4 +31,11 @@ public interface MyCourseTableService {
     public XcChooseCourse addFreeCourse(String userId, CoursePublish coursePublish);
 
     public XcChooseCourse addChargeCourse(String userId, CoursePublish coursePublish);
+
+    /**
+     * 保存选课成功状态
+     * @param chooseCourseId
+     * @return
+     */
+    public boolean saveChooseCourseSuccess(String chooseCourseId);
 }
