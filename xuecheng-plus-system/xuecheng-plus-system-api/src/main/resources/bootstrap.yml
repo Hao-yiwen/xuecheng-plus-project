@@ -6,17 +6,17 @@ server:
 spring:
   application:
     name: system-api
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.2.129:3306/xcplus_system?serverTimezone=UTC&userUnicode=true&useSSL=false&
+    username: root
+    password: mysql
   cloud:
     nacos:
       server-addr: 192.168.2.129:8848
       discovery:
         namespace: dev402
         group: xuecheng-plus-project
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.2.129:3306/xc402_system?serverTimezone=UTC&userUnicode=true&useSSL=false&
-    username: root
-    password: mysql
 # 日志文件配置路径
 logging:
   config: classpath:log4j2-dev.xml

@@ -1,5 +1,5 @@
 ### 申请验证码
-POST {{checkcode_host}}/checkcode/pic
+POST localhost:63075/checkcode/pic
 
 
 ### 校验验证码

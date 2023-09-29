@@ -116,8 +116,8 @@
 2022-09-22 13:00:27,344 DEBUG [main][HikariConfig.java:1098] - initializationFailTimeout.......1
 2022-09-22 13:00:27,344 DEBUG [main][HikariConfig.java:1098] - isolateInternalQueries..........false
 2022-09-22 13:00:27,344 DEBUG [main][HikariConfig.java:1098] - isolateInternalQueries..........false
-2022-09-22 13:00:27,345 DEBUG [main][HikariConfig.java:1098] - jdbcUrl.........................jdbc:mysql://192.168.101.65:3306/xcplus_content?serverTimezone=UTC&userUnicode=true&useSSL=false&
-2022-09-22 13:00:27,345 DEBUG [main][HikariConfig.java:1098] - jdbcUrl.........................jdbc:mysql://192.168.101.65:3306/xcplus_content?serverTimezone=UTC&userUnicode=true&useSSL=false&
+2022-09-22 13:00:27,345 DEBUG [main][HikariConfig.java:1098] - jdbcUrl.........................jdbc:mysql://192.168.2.129:3306/xcplus_content?serverTimezone=UTC&userUnicode=true&useSSL=false&
+2022-09-22 13:00:27,345 DEBUG [main][HikariConfig.java:1098] - jdbcUrl.........................jdbc:mysql://192.168.2.129:3306/xcplus_content?serverTimezone=UTC&userUnicode=true&useSSL=false&
 2022-09-22 13:00:27,346 DEBUG [main][HikariConfig.java:1098] - leakDetectionThreshold..........0
 2022-09-22 13:00:27,346 DEBUG [main][HikariConfig.java:1098] - leakDetectionThreshold..........0
 2022-09-22 13:00:27,346 DEBUG [main][HikariConfig.java:1098] - maxLifetime.....................1800000
@@ -350,8 +350,8 @@
 2022-09-22 13:03:46,260 DEBUG [main][HikariConfig.java:1098] - initializationFailTimeout.......1
 2022-09-22 13:03:46,261 DEBUG [main][HikariConfig.java:1098] - isolateInternalQueries..........false
 2022-09-22 13:03:46,261 DEBUG [main][HikariConfig.java:1098] - isolateInternalQueries..........false
-2022-09-22 13:03:46,262 DEBUG [main][HikariConfig.java:1098] - jdbcUrl.........................jdbc:mysql://192.168.101.65:3306/xcplus_content?serverTimezone=UTC&userUnicode=true&useSSL=false&
-2022-09-22 13:03:46,262 DEBUG [main][HikariConfig.java:1098] - jdbcUrl.........................jdbc:mysql://192.168.101.65:3306/xcplus_content?serverTimezone=UTC&userUnicode=true&useSSL=false&
+2022-09-22 13:03:46,262 DEBUG [main][HikariConfig.java:1098] - jdbcUrl.........................jdbc:mysql://192.168.2.129:3306/xcplus_content?serverTimezone=UTC&userUnicode=true&useSSL=false&
+2022-09-22 13:03:46,262 DEBUG [main][HikariConfig.java:1098] - jdbcUrl.........................jdbc:mysql://192.168.2.129:3306/xcplus_content?serverTimezone=UTC&userUnicode=true&useSSL=false&
 2022-09-22 13:03:46,263 DEBUG [main][HikariConfig.java:1098] - leakDetectionThreshold..........0
 2022-09-22 13:03:46,263 DEBUG [main][HikariConfig.java:1098] - leakDetectionThreshold..........0
 2022-09-22 13:03:46,263 DEBUG [main][HikariConfig.java:1098] - maxLifetime.....................1800000

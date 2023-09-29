@@ -34,13 +34,13 @@ public class PasswordAuthServiceImpl implements AuthService {
         // 远程调用验证码的服务接口去验证验证码
         String checkcode = authParamsDto.getCheckcode();
         String checkcodekey = authParamsDto.getCheckcodekey();
-        if(StringUtils.isEmpty(checkcode) || StringUtils.isEmpty(checkcodekey)) {
-            throw new RuntimeException("请输入验证码");
-        }
-        Boolean verify = checkCodeClient.verify(checkcodekey, checkcode);
-        if(!verify || verify==null) {
-            throw new RuntimeException("验证码输入错误");
-        }
+//        if(StringUtils.isEmpty(checkcode) || StringUtils.isEmpty(checkcodekey)) {
+//            throw new RuntimeException("请输入验证码");
+//        }
+//        Boolean verify = checkCodeClient.verify(checkcodekey, checkcode);
+//        if(!verify || verify==null) {
+//            throw new RuntimeException("验证码输入错误");
+//        }
         // 根据username查询数据库
         XcUser xcUser = xcUserMapper.selectOne(new LambdaQueryWrapper<XcUser>().eq(XcUser::getUsername, username));
         // 查询到用户不存在，返回null即可，spring security框架抛出异常用户不存在
