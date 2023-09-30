@@ -30,7 +30,9 @@ public class CoursePublishController {
     @GetMapping("/course/whole/{courseId}")
     public CoursePreviewDto getCoursePublish(@PathVariable("courseId") Long courseId) {
         // 查课程发布表
-        CoursePublish coursePublish = coursePublishService.getCoursePublish(courseId);
+//        CoursePublish coursePublish = coursePublishService.getCoursePublish(courseId);
+        // 先从缓存查询 没有再查询数据库
+        CoursePublish coursePublish = coursePublishService.getCoursePublishCache(courseId);
         // 封装数据
         CoursePreviewDto coursePreviewDto = new CoursePreviewDto();
         if (coursePublish == null) {
