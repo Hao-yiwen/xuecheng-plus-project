@@ -1,5 +1,11 @@
 # xuecheng-plus-project
 
+![JDK](https://img.shields.io/badge/JDK-1.8-blue)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.3.7.RELEASE-green)
+![Spring Cloud](https://img.shields.io/badge/Spring%20Cloud-Hoxton.SR9-purple)
+![Elasticsearch](https://img.shields.io/badge/Elasticsearch-7.12.1-yellow)
+![Mybatis-plus](https://img.shields.io/badge/Mybatis%20plus-3.4.1-orange)
+
 ## 学成在线微服务项目
 
 ### 项目说明
