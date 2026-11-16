@@ -11,6 +11,20 @@
     <artifactId>xuecheng-plus-gateway</artifactId>
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+        </dependency>
+
         <!--网关-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -60,14 +74,6 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-oauth2</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-        </dependency>
     </dependencies>
     <build>
         <finalName>${project.artifactId}-${project.version}</finalName>
@@ -101,7 +107,7 @@
                          &lt;!&ndash;build 完成后，push 指定 tag 的镜像，配合 imageTags 使用&ndash;&gt;
                          <pushImageTag>true</pushImageTag>
                      </imageTags>-->
-                    <baseImage>java:8u20</baseImage>
+                    <baseImage>eclipse-temurin:17-jre</baseImage>
                     <maintainer>docker_maven docker_maven@email.com</maintainer>
                     <workdir>/root</workdir>
                     <cmd>["java", "-version"]</cmd>
