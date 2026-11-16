@@ -38,8 +38,8 @@ public class TeachplanServiceImpl implements TeachplanService {
     private int getTeachplanCount(Long courseId, Long parentId) {
         LambdaQueryWrapper<Teachplan> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper = queryWrapper.eq(Teachplan::getCourseId, courseId).eq(Teachplan::getParentid, parentId);
-        Integer count = teachplanMapper.selectCount(queryWrapper);
-        return count + 1;
+        Long count = teachplanMapper.selectCount(queryWrapper);
+        return count.intValue() + 1;
     }
 
     @Override
@@ -85,8 +85,8 @@ public class TeachplanServiceImpl implements TeachplanService {
         } else {
             LambdaQueryWrapper<Teachplan> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper = queryWrapper.eq(Teachplan::getParentid, courseId);
-            Integer count = teachplanMapper.selectCount(queryWrapper);
-            if (count <= 0) {
+            Long count = teachplanMapper.selectCount(queryWrapper);
+            if (count == null || count <= 0) {
                 int delete = teachplanMapper.deleteById(courseId);
                 if (delete <= 0) {
                     throw new RuntimeException("课程计划删除失败");

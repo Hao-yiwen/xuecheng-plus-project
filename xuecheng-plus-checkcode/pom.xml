@@ -13,6 +13,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.xuecheng</groupId>
             <artifactId>xuecheng-plus-base</artifactId>
             <version>0.0.1-SNAPSHOT</version>
@@ -58,7 +63,6 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
-            <version>2.6.2</version>
         </dependency>
         <!-- Spring Boot 集成 Junit -->
         <dependency>
@@ -114,7 +118,7 @@
                          &lt;!&ndash;build 完成后，push 指定 tag 的镜像，配合 imageTags 使用&ndash;&gt;
                          <pushImageTag>true</pushImageTag>
                      </imageTags>-->
-                    <baseImage>java:8u20</baseImage>
+                    <baseImage>eclipse-temurin:17-jre</baseImage>
                     <maintainer>docker_maven docker_maven@email.com</maintainer>
                     <workdir>/root</workdir>
                     <cmd>["java", "-version"]</cmd>

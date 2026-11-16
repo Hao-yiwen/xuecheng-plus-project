@@ -13,6 +13,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
@@ -123,7 +128,7 @@
                          &lt;!&ndash;build 完成后，push 指定 tag 的镜像，配合 imageTags 使用&ndash;&gt;
                          <pushImageTag>true</pushImageTag>
                      </imageTags>-->
-                    <baseImage>java:8u20</baseImage>
+                    <baseImage>eclipse-temurin:17-jre</baseImage>
                     <maintainer>docker_maven docker_maven@email.com</maintainer>
                     <workdir>/root</workdir>
                     <cmd>["java", "-version"]</cmd>
