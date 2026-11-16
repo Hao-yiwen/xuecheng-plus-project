@@ -38,8 +38,8 @@ public class TeachplanServiceImpl implements TeachplanService {
     private int getTeachplanCount(Long courseId, Long parentId) {
         LambdaQueryWrapper<Teachplan> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper = queryWrapper.eq(Teachplan::getCourseId, courseId).eq(Teachplan::getParentid, parentId);
-        Integer count = teachplanMapper.selectCount(queryWrapper);
-        return count + 1;
+        Long count = teachplanMapper.selectCount(queryWrapper);
+        return count.intValue() + 1;
     }
 
     @Override
@@ -85,7 +85,7 @@ public class TeachplanServiceImpl implements TeachplanService {
         } else {
             LambdaQueryWrapper<Teachplan> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper = queryWrapper.eq(Teachplan::getParentid, courseId);
-            Integer count = teachplanMapper.selectCount(queryWrapper);
+            Long count = teachplanMapper.selectCount(queryWrapper);
             if (count <= 0) {
                 int delete = teachplanMapper.deleteById(courseId);
                 if (delete <= 0) {
@@ -114,7 +114,7 @@ public class TeachplanServiceImpl implements TeachplanService {
         if (MoveType.MOVEUP.getMoveType().equals(movetype) && currentOrder != 1) {
             newOrder = currentOrder - 1;
             queryWrapper.eq(Teachplan::getOrderby, newOrder);
-        } else if (currentOrder != teachplanMapper.selectCount(queryWrapper)) {
+        } else if (currentOrder != teachplanMapper.selectCount(queryWrapper).intValue()) {
             newOrder = currentOrder + 1;
             queryWrapper.eq(Teachplan::getOrderby, newOrder);
         } else {
